@@ -26,6 +26,10 @@ export const Greeting = Styled.div`
     font-family: 'Roboto', sans-serif;
     font-size: 4.20em;
     font-weight: 720;
+    min-height: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const Hobbies = Styled.div`
@@ -63,33 +67,35 @@ export const HobbyPreviewWrapper = Styled.div`
     position: absolute;
     z-index: 20;
     pointer-events: auto;
-    width: min(90vw, 32rem);
+    width: min(92vw, 34rem);
     transform: translate(-50%, 0);
 `;
 
 export const HobbyPreview = Styled.div`
     width: 100%;
-    padding: 1rem;
+    padding: 0.85rem 0.85rem 1rem;
     border-radius: 1rem;
     background: rgba(0, 0, 0, 0.2);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(6px);
+    min-height: 24rem;
 `;
 
 export const HobbyTitle = Styled.h3`
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.35rem;
     font-size: 1.2rem;
 `;
 
 export const HobbyDescription = Styled.p`
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.55rem;
     font-size: 0.95rem;
     line-height: 1.5;
 `;
 
 export const HobbyMedia = Styled.img`
     width: 100%;
-    max-height: 240px;
+    max-height: 18rem;
+    height: 18rem;
     object-fit: cover;
     border-radius: 0.75rem;
 `;
@@ -101,6 +107,15 @@ export const HobbyVideo = Styled.video`
     border-radius: 0.75rem;
     background: #000;
     object-fit: contain;
+`;
+
+export const HobbyEmbed = Styled.iframe`
+    width: 100%;
+    min-height: 18rem;
+    height: 18rem;
+    border: 0;
+    border-radius: 0.75rem;
+    background: #000;
 `;
 
 export const SocialLinks = Styled.div`

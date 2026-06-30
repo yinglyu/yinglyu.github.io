@@ -17,9 +17,12 @@ import {
     HobbyDescription,
     HobbyMedia,
     HobbyVideo,
+    HobbyEmbed,
     SocialLinks,
     Avatar
 } from './HomeStyledComponents';
+
+const greetingLines = ['Howdy, I\'m Ying!', '你好，我是吕滢！'];
 
 const SocialLink = (props) => (
     <a target="_blank" rel="noopener noreferrer" href={props.url}>
@@ -37,8 +40,8 @@ const hobbies = [
     {
         name: 'Latin Dancer',
         description: 'Picking up the new hobby at Broadway Dance Studio',
-        mediaType: 'video',
-        mediaSrc: 'videos/chacha.mov'
+        mediaType: 'embed',
+        mediaSrc: 'https://drive.google.com/file/d/1j6w8idkJPcvQqSZ7ucJJwkKyXOCOYYGC/preview'
     },
     {
         name: 'Tennis Player',
@@ -50,7 +53,7 @@ const hobbies = [
         name: 'Runner',
         description: 'Breaking middle school records in 800m, won second place during undergraduate years',
         mediaType: 'image',
-        mediaSrc: 'images/running.png'
+        mediaSrc: 'images/running.jpg'
     }
 ];
 
@@ -61,16 +64,14 @@ const getDisplayedHobbies = (length = 4) => hobbies
 
 export const Home = () => {
     const [activeHobby, setActiveHobby] = React.useState(null);
-    const [hoverTimeout, setHoverTimeout] = React.useState(null);
     const [previewPosition, setPreviewPosition] = React.useState({ top: 0, left: 0 });
+    const [displayedGreeting, setDisplayedGreeting] = React.useState('');
+    const [greetingIndex, setGreetingIndex] = React.useState(0);
     const displayedHobbies = React.useMemo(() => getDisplayedHobbies(4), []);
     const hobbyRowRef = React.useRef(null);
+    const previewRef = React.useRef(null);
 
     const handleHoverStart = (hobby, event) => {
-        if (hoverTimeout) {
-            clearTimeout(hoverTimeout);
-        }
-
         const rect = event.currentTarget.getBoundingClientRect();
         const containerRect = hobbyRowRef.current?.getBoundingClientRect();
         const top = rect.bottom - (containerRect ? containerRect.top : 0) + 12;
@@ -80,30 +81,50 @@ export const Home = () => {
         setActiveHobby(hobby);
     };
 
-    const handleHoverEnd = () => {
-        const timeoutId = window.setTimeout(() => setActiveHobby(null), 120);
-        setHoverTimeout(timeoutId);
-    };
+    React.useEffect(() => {
+        const handleOutsideClick = (event) => {
+            const clickedInsideHobbyRow = hobbyRowRef.current?.contains(event.target);
+            const clickedInsidePreview = previewRef.current?.contains(event.target);
 
-    React.useEffect(() => () => {
-        if (hoverTimeout) {
-            clearTimeout(hoverTimeout);
+            if (!clickedInsideHobbyRow && !clickedInsidePreview) {
+                setActiveHobby(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => document.removeEventListener('mousedown', handleOutsideClick);
+    }, []);
+
+    React.useEffect(() => {
+        const fullText = greetingLines[greetingIndex];
+        let timeoutId;
+
+        if (displayedGreeting.length < fullText.length) {
+            timeoutId = window.setTimeout(() => {
+                setDisplayedGreeting(fullText.slice(0, displayedGreeting.length + 1));
+            }, 140);
+        } else {
+            timeoutId = window.setTimeout(() => {
+                setDisplayedGreeting('');
+                setGreetingIndex((prev) => (prev + 1) % greetingLines.length);
+            }, 5000);
         }
-    }, [hoverTimeout]);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [displayedGreeting, greetingIndex]);
 
     return (
         <HomeWrapper>
             <NavBar />
             <MainContent>
                 <Avatar picture='images/mark-color.png'></Avatar>
-                <Greeting>Howdy, I'm Ying!</Greeting>
+                <Greeting>{displayedGreeting}</Greeting>
                 <Hobbies ref={hobbyRowRef}>
                     {displayedHobbies.map((hobby) => (
                         <HobbyChip
                             key={hobby.name}
                             type="button"
                             onMouseEnter={(event) => handleHoverStart(hobby, event)}
-                            onMouseLeave={handleHoverEnd}
                         >
                             {hobby.name}
                         </HobbyChip>
@@ -112,18 +133,20 @@ export const Home = () => {
 
                 {activeHobby && (
                     <HobbyPreviewWrapper
+                        ref={previewRef}
                         style={{ top: previewPosition.top, left: previewPosition.left }}
-                        onMouseEnter={() => {
-                            if (hoverTimeout) {
-                                clearTimeout(hoverTimeout);
-                            }
-                        }}
-                        onMouseLeave={handleHoverEnd}
                     >
                         <HobbyPreview>
                             <HobbyTitle>{activeHobby.name}</HobbyTitle>
                             <HobbyDescription>{activeHobby.description}</HobbyDescription>
-                            {activeHobby.mediaType === 'video' ? (
+                            {activeHobby.mediaType === 'embed' ? (
+                                <HobbyEmbed
+                                    src={activeHobby.mediaSrc}
+                                    title={activeHobby.name}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                />
+                            ) : activeHobby.mediaType === 'video' ? (
                                 <HobbyVideo
                                     src={activeHobby.mediaSrc}
                                     title={activeHobby.name}

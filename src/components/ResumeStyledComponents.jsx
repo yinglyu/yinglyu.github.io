@@ -16,6 +16,7 @@ export const MainContent = Styled.div`
     min-height: 100vh;
     max-width: 60%;
     margin-left: 20%;
+    padding-top: 6rem;
     -ms-flex-pack: center;
         justify-content: center;
     text-align: center;
