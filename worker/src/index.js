@@ -1,8 +1,8 @@
 const ALLOWED_ORIGINS = new Set([
-  'https://fiercefly.win',
-  'https://www.fiercefly.win',
-  'https://yinglyu.github.io',
-  'http://localhost:3000',
+  "https://yinglyu.github.io",
+  "http://localhost:3000",
+  "https://fiercefly.win",
+  "http://fiercefly.win",
 ]);
 const SENDER_EMAIL = 'coffee-chat@fiercefly.win';
 
