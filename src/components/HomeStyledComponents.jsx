@@ -90,6 +90,8 @@ export const HobbyDescription = Styled.p`
     margin: 0 0 0.55rem;
     font-size: 0.95rem;
     line-height: 1.5;
+    white-space: pre-line;
+    text-align: left;
 `;
 
 export const HobbyMedia = Styled.img`

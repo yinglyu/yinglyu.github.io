@@ -4,7 +4,6 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
 
-import { NavBar } from './NavBar';
 import {
     HomeWrapper,
     MainContent,
@@ -54,10 +53,16 @@ const hobbies = [
         description: 'Breaking middle school records in 800m, won second place during undergraduate years',
         mediaType: 'image',
         mediaSrc: 'images/running.jpg'
+    },
+    {
+        name: 'Home Owner',
+        description: 'Got enough space, all day of sunlight, rooms for family and friends, and charging station for EV \n Lesson learned: \n1. take photos of drywall before painting\n 2. consider electric socket for tv on wall',
+        mediaType: 'image',
+        mediaSrc: ''
     }
 ];
 
-const getDisplayedHobbies = (length = 4) => hobbies
+const getDisplayedHobbies = (length = 5) => hobbies
     .map((hobby) => ({ ...hobby, randPos: Math.random() }))
     .sort((a, b) => a.randPos - b.randPos)
     .slice(0, length);
@@ -67,14 +72,14 @@ export const Home = () => {
     const [previewPosition, setPreviewPosition] = React.useState({ top: 0, left: 0 });
     const [displayedGreeting, setDisplayedGreeting] = React.useState('');
     const [greetingIndex, setGreetingIndex] = React.useState(0);
-    const displayedHobbies = React.useMemo(() => getDisplayedHobbies(4), []);
+    const displayedHobbies = React.useMemo(() => getDisplayedHobbies(5), []);
     const hobbyRowRef = React.useRef(null);
     const previewRef = React.useRef(null);
 
     const handleHoverStart = (hobby, event) => {
         const rect = event.currentTarget.getBoundingClientRect();
         const containerRect = hobbyRowRef.current?.getBoundingClientRect();
-        const top = rect.bottom - (containerRect ? containerRect.top : 0) + 12;
+        const top = rect.bottom - (containerRect ? containerRect.top : 0) + 44;
         const left = rect.left - (containerRect ? containerRect.left : 0) + rect.width / 2;
 
         setPreviewPosition({ top, left });
@@ -115,7 +120,6 @@ export const Home = () => {
 
     return (
         <HomeWrapper>
-            <NavBar />
             <MainContent>
                 <Avatar picture='images/mark-color.png'></Avatar>
                 <Greeting>{displayedGreeting}</Greeting>

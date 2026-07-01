@@ -1,6 +1,5 @@
 import React from "react";
 
-import { NavBar } from './NavBar';
 import { ResumeWrapper, MainContent, HeaderWrapper, Dates, Header, SubHeader, ResumeEntryWrapper, Description, SectionTitle } from './ResumeStyledComponents';
 
 const resumeObject = {
@@ -109,7 +108,6 @@ const resumeEntryBuilder = (entries) => (
 
 export const Resume = () => (
     <ResumeWrapper>
-        <NavBar />
         <MainContent>
             <SectionTitle>WORK</SectionTitle>
             {resumeEntryBuilder(resumeObject.work)}

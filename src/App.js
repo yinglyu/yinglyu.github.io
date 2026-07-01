@@ -1,26 +1,28 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import React, { useState } from "react";
 import { Resume } from './components/Resume';
 import { Home } from './components/Home';
+import { Game } from './components/Game';
+import { Calendar } from './components/Calendar';
+import { NavBar } from './components/NavBar';
 
-const App = () => (
-  <Router>
-      <React.Fragment>
-      <Switch>
-        <Route path="/resume"> 
-          <Resume/>
-        </Route>
-        <Route path="/"> 
-          <Home />
-        </Route>
-      </Switch>
+const pages = {
+  home: Home,
+  resume: Resume,
+  game: Game,
+  calendar: Calendar,
+};
+
+const App = () => {
+  const [activePage, setActivePage] = useState('home');
+  const ActivePage = pages[activePage];
+
+  return (
+    <React.Fragment>
+      <NavBar activePage={activePage} onNavigate={setActivePage} />
+      <ActivePage />
     </React.Fragment>
-  </Router>
-);
+  );
+};
 
 
 

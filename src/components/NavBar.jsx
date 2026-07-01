@@ -1,6 +1,5 @@
 import React from "react";
 import Styled from '@emotion/styled';
-import { Link, useLocation } from "react-router-dom";
 
 const NavBarWrapper = Styled.nav`
   position: fixed;
@@ -17,16 +16,20 @@ const LinkItem = Styled.li`
   display: inline;
   list-style-type: none;
   margin: 0;
-  & > a {
+  & > button {
     color: #FFF;
     font-weight: bold;
+    font: inherit;
     text-decoration: none;
     padding: 0.75rem 1rem;
     display: inline-block;
     border-radius: 999px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
   }
-  & > a:hover {
+  & > button:hover {
     background: rgba(255,255,255,0.2);
     transform: translateY(-1px);
   }
@@ -40,41 +43,39 @@ const LinkList = Styled.ul`
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+
+  @media (max-width: 36rem) {
+    gap: 0;
+    font-size: 1rem;
+  }
 `;
 
 const ActiveLinkItem = Styled(LinkItem)`
-  & > a {
+  & > button {
     background: rgba(255,255,255,0.28);
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
   }
 `;
 
-export const NavBar = () => {
-  const location = useLocation();
-  const isHome = location.pathname === '/';
-  const isResume = location.pathname === '/resume';
+const tabs = [
+  ['home', 'Home'],
+  ['resume', 'Resume'],
+  ['game', 'Game'],
+  ['calendar', 'Calendar'],
+];
 
+export const NavBar = ({ activePage, onNavigate }) => {
   return (
     <NavBarWrapper>
       <LinkList>
-        {isHome ? (
-          <ActiveLinkItem>
-            <Link to="/">Home</Link>
-          </ActiveLinkItem>
-        ) : (
-          <LinkItem>
-            <Link to="/">Home</Link>
-          </LinkItem>
-        )}
-        {isResume ? (
-          <ActiveLinkItem>
-            <Link to="/resume">Resume</Link>
-          </ActiveLinkItem>
-        ) : (
-          <LinkItem>
-            <Link to="/resume">Resume</Link>
-          </LinkItem>
-        )}
+        {tabs.map(([page, label]) => {
+          const Item = activePage === page ? ActiveLinkItem : LinkItem;
+          return (
+            <Item key={page}>
+              <button type="button" onClick={() => onNavigate(page)}>{label}</button>
+            </Item>
+          );
+        })}
       </LinkList>
     </NavBarWrapper>
   );

@@ -1,7 +1,7 @@
 import Styled from '@emotion/styled';
 
 export const ResumeWrapper = Styled.div`
-    background-color: skyBlue;
+    background: linear-gradient(135deg, #1f4e79, #4fa3d9);
     background-size: cover;
     height: 100%;
     overflow: hidden;
